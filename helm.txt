@@ -1,0 +1,15 @@
+# Helm charts provide a template-based approach to defining and packaging Kubernetes configurations
+helm create app
+
+#Modify the generated chart files to match your application's requirements. The chart structure includes files like values.yaml, templates/, and Chart.yaml.
+#values.yaml: This file contains configurable values that can be overridden during deployment.
+#templates/: This directory holds the Kubernetes resource templates, where you define the desired state of your application.
+#Chart.yaml: This file contains metadata about the chart, such as its name, version, and dependencies.
+
+#Package the chart: Once you have customized the Helm chart, package it into a chart archive. Run the following command from the root directory of your chart:
+helm package .
+  
+#To deploy the chart to a Kubernetes cluster, use the helm install command:
+helm install my-release app-0.1.0.tgz
+
+#Customize values during deployment: If you need to override any values defined in the values.yaml file during deployment, you can specify them using the --set flag:
