@@ -13,13 +13,15 @@ spec:
         app: microservice
     spec:
       containers:
-        - name: microservice
-          image: application
+        - name: myapp
+          image: mohamed/app
           ports:
             - containerPort: 3000
         strategy:
           type: RollingUpdate
           maxUnavailable: 1
+        imagePullSecrets:
+            - name: docker-hub-credentials
 apiVersion: v1
 kind: Service
 metadata:
