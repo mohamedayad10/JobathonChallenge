@@ -21,7 +21,7 @@ spec:
           type: RollingUpdate
           maxUnavailable: 1
         imagePullSecrets:
-            - name: docker-hub-credentials
+            - name: docker-hub-credentials-in-kuberenetes-secret-file
 apiVersion: v1
 kind: Service
 metadata:
