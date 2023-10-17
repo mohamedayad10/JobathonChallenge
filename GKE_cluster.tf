@@ -67,3 +67,19 @@ resource "google_container_cluster_iam_member" "static_ip_binding" {
 output "static_ip_address" {
   value = google_compute_address.static_ip.address
 }
+
+resource "google_compute_instance" "my-instance" {
+  name         = "my-instance"
+  machine_type = "n1-standard-1"
+  zone         = "us-central1-a"
+
+  boot_disk {
+    initialize_params {
+      image = "debian-cloud/debian-11"
+    }
+  }
+
+  network_interface {
+    network = "default"
+  }
+}
