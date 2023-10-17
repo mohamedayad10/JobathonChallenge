@@ -3,7 +3,7 @@ pipeline {
 	environment {
 		BRANCH_NAME = 'main'
 	}
-	stages {
+stages {
     stage('Setup') {
       steps {
         // Set up a Python virtual environment
@@ -48,37 +48,31 @@ pipeline {
             sh 'docker build -t mohamed/app .'
             sh "echo $pass | docker login -u $user --pasword-stdin"
             sh 'docker push mohamed/app'
-          }
-        }
-      }
+          }}}
     }
-		stage ("deploy to dev server") {
-				when {
-					expression { BRANCH_NAME == 'main' }
-				}
-			steps {
-				script {
-					sshagent(['ec2-dev']) {
-    					sh 'ssh ubuntu@ip docker "echo "pass" | docker login --username=user --password-stdin && docker run -d -p 3000:3000 --name myapp mohamed/app"'
-						}
-						
-				}
+    stage ("deploy to dev server") {
 				
-
-			}
-
-		}
-		
-stage('Deploy to Production Server') {
-	when {
-                expression { BRANCH_NAME == 'main' }
-            }
+     steps {
+	script {
+	 sshagent(['ec2-dev']) {
+    	  sh 'ssh ubuntu@ip docker "echo "pass" | docker login --username=user --password-stdin && docker run -d -p 3000:3000 --name myapp mohamed/app"'
+						}}}
+    }
+    stage('Deploy to Production Server') {
       steps {
 	      sshagent(['ec2-prod']) {
           sh 'ssh ubuntu@ip docker "echo "pass" | docker login --username=user --password-stdin && docker run -d -p 3000:3000 --name myapp mohamed/app"'
    
 	      }
 	      }
+    }
+    stage("Deploy to kubernetes") {
+	steps {
+	  kubernetesDeploy(
+          kubeconfigId: 'your-kubeconfig', // The ID configured in Jenkins for Kubernetes credentials
+          configs: 'path/to/kubernetes/deployment.yaml' // Path to your Kubernetes deployment YAML file
+        )
+	    }
     }
 
 	}
