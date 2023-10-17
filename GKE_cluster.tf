@@ -1,7 +1,7 @@
 # Specify the provider and authentication details
 provider "google" {
   credentials = file("path/to/your/credentials.json")
-  project     = ""
+  project     = "your-project-id"
   region      = "us-central1"
 }
 
